@@ -3,34 +3,28 @@ import json
 import random
 import os
 
-# Atributos do jogador
+# Variaveis globais
 jogador = {
     "nome": "Eldrin",
     "mana": 0,
     "mana_max": 0,
     "saude": 0,
     "saude_max": 0,
-    "conhecimento": 0,
-    "forca": 0,
-    "destreza": 0,
-    "carisma": 0,
     "inventario": [],
     "vitorias": 0,
     "cena_atual": "introducao",
-    "nivel": 1,
-    "xp": 0,
     "feiticos": [],
     "habilidades": [],
     "escudo_turnos": 0,
     "classe": ""
 }
 
-# Variaveis globais
 inimigo_atual = None
 sacerdote_vivo = False
 sacerdote = None
+encapuzado_confrontado = False
 
-# Escolha de Classe
+# Escolha de Classe (Nivel Maximo)
 def escolher_classe():
     while not jogador["classe"]:
         print("Escolha sua classe:")
@@ -42,97 +36,53 @@ def escolher_classe():
         escolha = input("Escolha (1-5): ")
         if escolha == "1":
             jogador["classe"] = "Guerreiro"
-            jogador["saude_max"] = 70
-            jogador["saude"] = 70
-            jogador["mana_max"] = 20
-            jogador["mana"] = 20
-            jogador["conhecimento"] = 5
-            jogador["forca"] = 15
-            jogador["destreza"] = 10
-            jogador["carisma"] = 8
+            jogador["saude_max"] = 110
+            jogador["saude"] = 110
+            jogador["mana_max"] = 60
+            jogador["mana"] = 60
             jogador["feiticos"] = ["Golpe Forte"]
-            jogador["habilidades"] = ["Ataque Poderoso"]
-            print("Voce se tornou um Guerreiro.")
+            jogador["habilidades"] = ["Ataque Poderoso", "Defesa", "Vitalidade", "Ataque Extra", "Resistencia"]
+            print("Voce se tornou um Guerreiro no nivel maximo.")
         elif escolha == "2":
             jogador["classe"] = "Ladino"
-            jogador["saude_max"] = 50
-            jogador["saude"] = 50
-            jogador["mana_max"] = 30
-            jogador["mana"] = 30
-            jogador["conhecimento"] = 15
-            jogador["forca"] = 10
-            jogador["destreza"] = 15
-            jogador["carisma"] = 12
+            jogador["saude_max"] = 90
+            jogador["saude"] = 90
+            jogador["mana_max"] = 70
+            jogador["mana"] = 70
             jogador["inventario"].append("Kit de Ladrao")
             jogador["feiticos"] = ["Furtividade"]
-            jogador["habilidades"] = ["Esconder nas Sombras"]
-            print("Voce se tornou um Ladino.")
+            jogador["habilidades"] = ["Esconder nas Sombras", "Golpe Oportunista", "Evasao", "Mestre das Armadilhas", "Assassinar"]
+            print("Voce se tornou um Ladino no nivel maximo.")
         elif escolha == "3":
             jogador["classe"] = "Mago"
-            jogador["saude_max"] = 40
-            jogador["saude"] = 40
-            jogador["mana_max"] = 90
-            jogador["mana"] = 90
-            jogador["conhecimento"] = 18
-            jogador["forca"] = 8
-            jogador["destreza"] = 12
-            jogador["carisma"] = 10
-            jogador["feiticos"] = ["Bola de Fogo", "Visao Mistica"]
-            jogador["habilidades"] = ["Meditacao Arcana"]
-            print("Voce se tornou um Mago.")
+            jogador["saude_max"] = 80
+            jogador["saude"] = 80
+            jogador["mana_max"] = 130
+            jogador["mana"] = 130
+            jogador["feiticos"] = ["Bola de Fogo", "Visao Mistica", "Escudo Arcano", "Raio Congelante", "Ilusao"]
+            jogador["habilidades"] = ["Meditacao Arcana", "Escudo Arcano", "Potencializar Magia", "Teletransporte", "Maestria Elemental"]
+            print("Voce se tornou um Mago no nivel maximo.")
         elif escolha == "4":
             jogador["classe"] = "Paladino"
-            jogador["saude_max"] = 65
-            jogador["saude"] = 65
-            jogador["mana_max"] = 40
-            jogador["mana"] = 40
-            jogador["conhecimento"] = 10
-            jogador["forca"] = 13
-            jogador["destreza"] = 10
-            jogador["carisma"] = 15
+            jogador["saude_max"] = 105
+            jogador["saude"] = 105
+            jogador["mana_max"] = 80
+            jogador["mana"] = 80
             jogador["feiticos"] = ["Cura Menor"]
-            jogador["habilidades"] = ["Imposicao de Maos"]
-            print("Voce se tornou um Paladino.")
+            jogador["habilidades"] = ["Imposicao de Maos", "Aura Protetora", "Julgamento", "Bencao Divina", "Furia Divina"]
+            print("Voce se tornou um Paladino no nivel maximo.")
         elif escolha == "5":
             jogador["classe"] = "Bardo"
-            jogador["saude_max"] = 55
-            jogador["saude"] = 55
-            jogador["mana_max"] = 50
-            jogador["mana"] = 50
-            jogador["conhecimento"] = 12
-            jogador["forca"] = 10
-            jogador["destreza"] = 13
-            jogador["carisma"] = 16
-            jogador["feiticos"] = ["Inspiracao"]
-            jogador["habilidades"] = ["Cancao da Bravura"]
-            print("Voce se tornou um Bardo.")
+            jogador["saude_max"] = 95
+            jogador["saude"] = 95
+            jogador["mana_max"] = 90
+            jogador["mana"] = 90
+            jogador["feiticos"] = ["Inspiracao", "Balada Lendaria"]
+            jogador["habilidades"] = ["Cancao da Bravura", "Melodia Curativa", "Harmonia Inspiradora", "Contracanto", "Balada Lendaria"]
+            print("Voce se tornou um Bardo no nivel maximo.")
         else:
             print("Escolha invalida. Tente novamente.")
-    print(f"Nome: {jogador['nome']}, Classe: {jogador['classe']}, Saude: {jogador['saude']}/{jogador['saude_max']}, Mana: {jogador['mana']}/{jogador['mana_max']}, Conhecimento: {jogador['conhecimento']}, Forca: {jogador['forca']}, Destreza: {jogador['destreza']}, Carisma: {jogador['carisma']}, Feiticos: {jogador['feiticos']}, Habilidades: {jogador['habilidades']}, Inventario: {jogador['inventario']}")
-
-# Sistema de niveis
-def verificar_nivel():
-    xp_requisitos = [80, 160, 240, 320]
-    habilidades_por_nivel = {
-        2: {"Guerreiro": "Defesa", "Ladino": "Golpe Oportunista", "Mago": "Escudo Arcano", "Paladino": "Aura Protetora", "Bardo": "Melodia Curativa"},
-        3: {"Guerreiro": "Vitalidade", "Ladino": "Evasao", "Mago": "Potencializar Magia", "Paladino": "Julgamento", "Bardo": "Harmonia Inspiradora"},
-        4: {"Guerreiro": "Ataque Extra", "Ladino": "Mestre das Armadilhas", "Mago": "Teletransporte", "Paladino": "Bencao Divina", "Bardo": "Contracanto"},
-        5: {"Guerreiro": "Resistencia", "Ladino": "Assassinar", "Mago": "Maestria Elemental", "Paladino": "Furia Divina", "Bardo": "Balada Lendaria"}
-    }
-    nivel_anterior = jogador["nivel"]
-    for nivel, xp_req in enumerate(xp_requisitos, 1):
-        if jogador["xp"] >= xp_req and jogador["nivel"] < nivel + 1:
-            jogador["nivel"] = nivel + 1
-            jogador["saude_max"] += 10
-            jogador["saude"] = jogador["saude_max"]
-            jogador["mana_max"] += 15
-            jogador["mana"] = jogador["mana_max"]
-            if nivel + 1 in habilidades_por_nivel and jogador["classe"] in habilidades_por_nivel[nivel + 1]:
-                nova_habilidade = habilidades_por_nivel[nivel + 1][jogador["classe"]]
-                jogador["habilidades"].append(nova_habilidade)
-                print(f"Voce aprendeu uma nova habilidade: {nova_habilidade}!")
-    if jogador["nivel"] > nivel_anterior:
-        print(f"Voce alcancou o nivel {jogador['nivel']}! Saude e Mana aumentados.")
+    print(f"Nome: {jogador['nome']}, Classe: {jogador['classe']}, Saude: {jogador['saude']}/{jogador['saude_max']}, Mana: {jogador['mana']}/{jogador['mana_max']}, Feiticos: {jogador['feiticos']}, Habilidades: {jogador['habilidades']}, Inventario: {jogador['inventario']}")
 
 # Funcoes auxiliares
 def salvar_jogo():
@@ -159,25 +109,19 @@ def mostrar_status():
     print(f"\n--- Estado do Jogador ---")
     print(f"Nome: {jogador['nome']}")
     print(f"Classe: {jogador['classe']}")
-    print(f"Nivel: {jogador['nivel']}")
-    print(f"XP: {jogador['xp']}")
     print(f"Saude: {jogador['saude']}/{jogador['saude_max']}")
     print(f"Mana: {jogador['mana']}/{jogador['mana_max']}")
-    print(f"Conhecimento: {jogador['conhecimento']}")
-    print(f"Forca: {jogador['forca']}")
-    print(f"Destreza: {jogador['destreza']}")
-    print(f"Carisma: {jogador['carisma']}")
     print(f"Inventario: {jogador['inventario']}")
     print(f"Feiticos: {jogador['feiticos']}")
     print(f"Habilidades: {jogador['habilidades']}")
     print("-------------------------\n")
 
-# Banco de dados para o gerador (expansivel com IA)
+# Banco de dados para o gerador
 aventuras_base = {
     "missoes": [
-        {"nome": "Resgatar Aldeao", "descricao": "Um aldeao foi capturado por bandidos na floresta. Salve-o!", "recompensa": {"xp": 20, "item": "Pocao de Mana"}, "dificuldade": "Facil"},
-        {"nome": "Cacar Espectro", "descricao": "Um espectro assombra as ruinas. Derrote-o para recuperar um tomo.", "recompensa": {"xp": 30, "item": "Tomo do Caos"}, "dificuldade": "Media"},
-        {"nome": "Explorar Caverna", "descricao": "Uma caverna misteriosa guarda um cajado antigo. Enfrente suas armadilhas.", "recompensa": {"xp": 40, "item": "Cajado de Lyssia"}, "dificuldade": "Dificil"}
+        {"nome": "Resgatar Aldeao", "descricao": "Um aldeao foi capturado por bandidos na floresta. Salve-o!", "recompensa": {"item": "Pocao de Mana"}, "dificuldade": "Facil"},
+        {"nome": "Cacar Espectro", "descricao": "Um espectro assombra as ruinas. Derrote-o para recuperar um tomo.", "recompensa": {"item": "Tomo do Caos"}, "dificuldade": "Media"},
+        {"nome": "Explorar Caverna", "descricao": "Uma caverna misteriosa guarda um cajado antigo. Enfrente suas armadilhas.", "recompensa": {"item": "Cajado de Lyssia"}, "dificuldade": "Dificil"}
     ],
     "inimigos": [
         {"nome": "Lobo Sombrio", "hp": 45, "dano": 10, "fraqueza": ["Bola de Fogo"], "historia": "Um predador encantado pela magia negra."},
@@ -245,8 +189,8 @@ def salao_conselho(escolha):
     while True:
         print(f"""
 No Salao do Conselho, o Lorde Regente e o Capitao da Guarda te recebem. O Regente explica: 'Os desaparecimentos comecaram ha semanas.'
-1. Perguntar ao Regente sobre o culto (Conhecimento >= 15)
-2. Falar com o Capitao sobre suspeitas (Conhecimento >= 10)
+1. Perguntar ao Regente sobre o culto
+2. Falar com o Capitao sobre suspeitas
 3. Aceitar a missao e partir para a Floresta Sombria
 4. Ir para a taverna
 5. Ir para a biblioteca arcana
@@ -255,29 +199,15 @@ No Salao do Conselho, o Lorde Regente e o Capitao da Guarda te recebem. O Regent
         """)
         escolha = input("Escolha (1-7): ")
         if escolha == "1":
-            if jogador["conhecimento"] >= 15:
-                print("O Regente sussurra: 'Ha rumores de um culto nas ruinas.'")
-                jogador["conhecimento"] += 5
-                jogador["xp"] += 20
-                verificar_nivel()
-                print("Voce permanece no Salao, ponderando as informacoes.")
-            else:
-                print("Voce nao tem conhecimento suficiente para perguntar sobre isso.")
+            print("O Regente sussurra: 'Ha rumores de um culto nas ruinas.'")
+            print("Voce permanece no Salao, ponderando as informacoes.")
         elif escolha == "2":
-            if jogador["conhecimento"] >= 10:
-                print("O Capitao diz: 'Um conselheiro age estranho. Cuidado na floresta.'")
-                jogador["inventario"].append("Dica do Traidor")
-                jogador["xp"] += 15
-                verificar_nivel()
-                print("Voce permanece no Salao, avaliando a dica.")
-            else:
-                print("Voce nao tem conhecimento suficiente para entender as suspeitas do Capitao.")
+            print("O Capitao diz: 'Um conselheiro age estranho. Cuidado na floresta.'")
+            jogador["inventario"].append("Dica do Traidor")
+            print("Voce permanece no Salao, avaliando a dica.")
         elif escolha == "3":
             print("Voce aceita a missao e parte para a Floresta Sombria.")
             jogador["inventario"].append("Mapa da Floresta")
-            jogador["conhecimento"] += 5
-            jogador["xp"] += 10
-            verificar_nivel()
             exibir_cena("floresta_sombria")
             break
         elif escolha == "4":
@@ -296,11 +226,12 @@ No Salao do Conselho, o Lorde Regente e o Capitao da Guarda te recebem. O Regent
             print("Escolha invalida. Tente novamente.")
 
 def taverna(escolha):
+    global encapuzado_confrontado
     while True:
         print(f"""
-Na taverna, um velho bebado murmura sobre 'sombras que falam'. Um encapuzado te observa.
-1. Confrontar o encapuzado
-2. Falar com o bebado (Conhecimento >= 10)
+Na taverna, um velho bebado murmura sobre 'sombras que falam'. {'Um encapuzado te observa.' if not encapuzado_confrontado else 'O encapuzado ja foi confrontado.'}
+1. Confrontar o encapuzado{' (indisponivel)' if encapuzado_confrontado else ''}
+2. Falar com o bebado
 3. Sair da taverna
 4. Ir para o Salao do Conselho
 5. Ir para a biblioteca arcana
@@ -310,20 +241,16 @@ Na taverna, um velho bebado murmura sobre 'sombras que falam'. Um encapuzado te 
         """)
         escolha = input("Escolha (1-8): ")
         if escolha == "1":
-            print("O encapuzado foge, mas deixa cair um pingente.")
-            jogador["inventario"].append("Pingente Misterioso")
-            jogador["xp"] += 10
-            verificar_nivel()
-            print("Voce permanece na taverna, observando o ambiente.")
-        elif escolha == "2":
-            if jogador["conhecimento"] >= 10:
-                print("O bebado diz: 'Eles se reunem nas ruinas antigas.'")
-                jogador["conhecimento"] += 5
-                jogador["xp"] += 20
-                verificar_nivel()
-                print("Voce permanece na taverna, refletindo sobre a informacao.")
+            if not encapuzado_confrontado:
+                print("O encapuzado foge, mas deixa cair um pingente.")
+                jogador["inventario"].append("Pingente Misterioso")
+                encapuzado_confrontado = True
+                print("Voce permanece na taverna, observando o ambiente.")
             else:
-                print("O bebado parece confuso demais para conversar.")
+                print("Voce ja confrontou o encapuzado.")
+        elif escolha == "2":
+            print("O bebado diz: 'Eles se reunem nas ruinas antigas.'")
+            print("Voce permanece na taverna, refletindo sobre a informacao.")
         elif escolha == "3":
             if "Mapa da Floresta" in jogador["inventario"]:
                 print("Com o mapa em maos, voce sai da taverna e segue para a Floresta Sombria.")
@@ -373,9 +300,6 @@ Na biblioteca arcana, voce encontra um tomo sobre magias proibidas.
             if jogador["mana"] >= 10 and "Visao Mistica" in jogador["feiticos"]:
                 jogador["mana"] -= 10
                 print("Voce ve uma visao: um altar na floresta, pulsando com energia negra.")
-                jogador["conhecimento"] += 10
-                jogador["xp"] += 20
-                verificar_nivel()
                 print("Voce continua na biblioteca, analisando a visao.")
             elif "Visao Mistica" not in jogador["feiticos"]:
                 print("Voce nao conhece esse feitico.")
@@ -383,9 +307,6 @@ Na biblioteca arcana, voce encontra um tomo sobre magias proibidas.
                 print("Mana insuficiente!")
         elif escolha == "2":
             print("O tomo menciona um culto antigo.")
-            jogador["conhecimento"] += 5
-            jogador["xp"] += 10
-            verificar_nivel()
             print("Voce permanece na biblioteca, folheando o tomo.")
         elif escolha == "3":
             if "Mapa da Floresta" in jogador["inventario"]:
@@ -425,7 +346,7 @@ def floresta_sombria(escolha):
         return
     while True:
         print(f"""
-Mana: {jogador['mana']}/{jogador['mana_max']} | Saude: {jogador['saude']}/{jogador['saude_max']} | Nivel: {jogador['nivel']}
+Mana: {jogador['mana']}/{jogador['mana_max']} | Saude: {jogador['saude']}/{jogador['saude_max']}
 Inventario: {jogador['inventario']}
 Voce entra na Floresta Sombria. O ar e pesado, e sussurros ecoam.
 1. Explorar uma trilha estreita
@@ -455,9 +376,6 @@ Voce entra na Floresta Sombria. O ar e pesado, e sussurros ecoam.
             if jogador["mana"] >= 10 and "Visao Mistica" in jogador["feiticos"]:
                 jogador["mana"] -= 10
                 print("Visao Mistica revela uma armadilha. Voce encontra ruinas antigas.")
-                jogador["conhecimento"] += 5
-                jogador["xp"] += 20
-                verificar_nivel()
                 exibir_cena("ruinas_antigas")
                 break
             elif "Visao Mistica" not in jogador["feiticos"]:
@@ -504,8 +422,6 @@ def evento_aleatorio(escolha):
         exibir_cena("combate_inimigos")
     else:
         efeito()
-        jogador["xp"] += 15
-        verificar_nivel()
         if jogador["saude"] <= 0:
             fim_jogo("Voce sucumbe aos ferimentos. Vaeloria esta perdida.")
         else:
@@ -515,62 +431,36 @@ def encontro_truidor(escolha):
     while True:
         print(f"""
 Voce encontra o Traidor, um conselheiro corrupto, escondido na floresta. Ele segura um pergaminho sombrio e te encara com desdem.
-1. Confronta-lo com palavras (Carisma >= 20)
-2. Atacar imediatamente (Forca >= 15)
-3. Tentar fugir (Destreza >= 15)
+1. Confronta-lo com palavras
+2. Atacar imediatamente
+3. Tentar fugir
 4. Salvar jogo
 5. Mostrar Status
         """)
         escolha = input("Escolha (1-5): ")
         if escolha == "1":
-            if jogador["carisma"] >= 20:
-                print("Com palavras firmes, voce convence o Traidor a revelar seus planos. Ele entrega o pergaminho.")
-                jogador["inventario"].append("Pergaminho Sombrio")
-                jogador["xp"] += 30
-                jogador["conhecimento"] += 5
-                verificar_nivel()
-                print("Voce segue para as ruinas, com novas informacoes.")
-                exibir_cena("ruinas_antigas")
-                break
-            else:
-                print("O Traidor ri de suas palavras e ataca!")
-                jogador["saude"] -= 10
-                print("Voce perde 10 de saude no confronto.")
-                if jogador["saude"] <= 0:
-                    fim_jogo("Voce sucumbe aos ferimentos do Traidor. Vaeloria esta perdida.")
-                    break
+            print("Com palavras firmes, voce convence o Traidor a revelar seus planos. Ele entrega o pergaminho.")
+            jogador["inventario"].append("Pergaminho Sombrio")
+            print("Voce segue para as ruinas, com novas informacoes.")
+            exibir_cena("ruinas_antigas")
+            break
         elif escolha == "2":
-            if jogador["forca"] >= 15:
-                print("Voce golpeia o Traidor com forca, derrotando-o rapidamente. Voce pega seu pergaminho.")
-                jogador["inventario"].append("Pergaminho Sombrio")
-                jogador["xp"] += 25
-                jogador["vitorias"] += 1
-                verificar_nivel()
-                print("Voce segue para as ruinas, vitorioso.")
-                exibir_cena("ruinas_antigas")
-                break
-            else:
-                print("Seu ataque e fraco, e o Traidor contra-ataca!")
-                jogador["saude"] -= 15
-                print("Voce perde 15 de saude no confronto.")
-                if jogador["saude"] <= 0:
-                    fim_jogo("Voce sucumbe aos ferimentos do Traidor. Vaeloria esta perdida.")
-                    break
+            print("Voce golpeia o Traidor com forca, derrotando-o rapidamente. Voce pega seu pergaminho.")
+            jogador["inventario"].append("Pergaminho Sombrio")
+            jogador["vitorias"] += 1
+            print("Voce segue para as ruinas, vitorioso.")
+            exibir_cena("ruinas_antigas")
+            break
         elif escolha == "3":
-            if jogador["destreza"] >= 15:
-                print("Voce escapa do Traidor, desaparecendo entre as arvores.")
-                jogador["xp"] += 10
-                verificar_nivel()
-                print("Voce segue para as ruinas, evitando o confronto.")
-                exibir_cena("ruinas_antigas")
+            print("Voce tenta fugir, mas o Traidor te alcanca e ataca!")
+            jogador["saude"] -= 5  # Reduzido de 10 para 5
+            print("Voce perde 5 de saude na fuga.")
+            if jogador["saude"] <= 0:
+                fim_jogo("Voce sucumbe aos ferimentos do Traidor. Vaeloria esta perdida.")
                 break
-            else:
-                print("Voce tenta fugir, mas o Traidor te alcanca e ataca!")
-                jogador["saude"] -= 10
-                print("Voce perde 10 de saude na fuga.")
-                if jogador["saude"] <= 0:
-                    fim_jogo("Voce sucumbe aos ferimentos do Traidor. Vaeloria esta perdida.")
-                    break
+            print("Voce escapa e segue para as ruinas.")
+            exibir_cena("ruinas_antigas")
+            break
         elif escolha == "4":
             salvar_jogo()
         elif escolha == "5":
@@ -582,43 +472,27 @@ def encontro_eremita(escolha):
     while True:
         print(f"""
 Um eremita sabio surge entre as arvores. Seus olhos brilham com conhecimento antigo, e ele parece saber sobre o culto.
-1. Pedir conselhos sobre o culto (Conhecimento >= 20)
-2. Oferecer ajuda em troca de informacoes (Carisma >= 15)
+1. Pedir conselhos sobre o culto
+2. Oferecer ajuda em troca de informacoes
 3. Ignorar o eremita e seguir adiante
 4. Salvar jogo
 5. Mostrar Status
         """)
         escolha = input("Escolha (1-5): ")
         if escolha == "1":
-            if jogador["conhecimento"] >= 20:
-                print("O eremita revela: 'O culto usa um pergaminho para selar seu ritual. Encontre-o nas ruinas.'")
-                jogador["inventario"].append("Pergaminho de Selamento")
-                jogador["xp"] += 30
-                jogador["conhecimento"] += 5
-                verificar_nivel()
-                print("Voce segue para as ruinas, com o pergaminho em maos.")
-                exibir_cena("ruinas_antigas")
-                break
-            else:
-                print("O eremita balanca a cabeca: 'Voce nao esta pronto para entender.'")
-                print("Voce permanece com ele, sem novas informacoes.")
+            print("O eremita revela: 'O culto usa um pergaminho para selar seu ritual. Encontre-o nas ruinas.'")
+            jogador["inventario"].append("Pergaminho de Selamento")
+            print("Voce segue para as ruinas, com o pergaminho em maos.")
+            exibir_cena("ruinas_antigas")
+            break
         elif escolha == "2":
-            if jogador["carisma"] >= 15:
-                print("Impressionado com sua oferta, o eremita decide te acompanhar como aliado.")
-                jogador["inventario"].append("Aliada Eremita")
-                jogador["xp"] += 20
-                jogador["carisma"] += 5
-                verificar_nivel()
-                print("Voce segue para as ruinas com o eremita ao seu lado.")
-                exibir_cena("ruinas_antigas")
-                break
-            else:
-                print("O eremita recusa sua oferta, dizendo que voce nao inspira confianca.")
-                print("Voce permanece com ele, sem ganhar sua ajuda.")
+            print("Impressionado com sua oferta, o eremita decide te acompanhar como aliado.")
+            jogador["inventario"].append("Aliada Eremita")
+            print("Voce segue para as ruinas com o eremita ao seu lado.")
+            exibir_cena("ruinas_antigas")
+            break
         elif escolha == "3":
             print("Voce ignora o eremita e segue seu caminho para as ruinas.")
-            jogador["xp"] += 5
-            verificar_nivel()
             exibir_cena("ruinas_antigas")
             break
         elif escolha == "4":
@@ -641,16 +515,15 @@ Voce chega as ruinas antigas, cobertas por trepadeiras e energia sombria. Um alt
         """)
         escolha = input("Escolha (1-6): ")
         if escolha == "1":
-            print("Voce se aproxima do altar, desencadeando um combate!")
+            print("Voce se aproxima do altar, mas inimigos menores aparecem antes do confronto final!")
             exibir_cena("combate_inimigos")
+            if jogador["saude"] > 0:  # Se sobreviver ao combate inicial
+                exibir_cena("altar_sacrificio")
             break
         elif escolha == "2":
             if jogador["mana"] >= 10 and "Visao Mistica" in jogador["feiticos"]:
                 jogador["mana"] -= 10
                 print("Visao Mistica revela o ritual no altar. Voce avanca com cuidado.")
-                jogador["conhecimento"] += 5
-                jogador["xp"] += 20
-                verificar_nivel()
                 exibir_cena("altar_sacrificio")
                 break
             elif "Visao Mistica" not in jogador["feiticos"]:
@@ -685,7 +558,7 @@ def missao_aleatoria(escolha):
         print(f"""
 Nova Missao: {missao['nome']}
 Descricao: {missao['descricao']}
-Recompensa: {missao['recompensa']['xp']} XP, {missao['recompensa']['item']}
+Recompensa: {missao['recompensa']['item']}
 1. Aceitar a missao
 2. Recusar e voltar
 3. Salvar jogo
@@ -699,10 +572,8 @@ Recompensa: {missao['recompensa']['xp']} XP, {missao['recompensa']['item']}
             print(f"Um {inimigo_atual['nome']} aparece! Historia: {inimigo_atual['historia']}")
             exibir_cena("combate_inimigos")
             if jogador["saude"] > 0:  # Apos combate, se sobreviver
-                jogador["xp"] += missao["recompensa"]["xp"]
                 jogador["inventario"].append(missao["recompensa"]["item"])
-                print(f"Missao concluida! Ganhou {missao['recompensa']['xp']} XP e {missao['recompensa']['item']}.")
-                verificar_nivel()
+                print(f"Missao concluida! Ganhou {missao['recompensa']['item']}.")
             exibir_cena("floresta_sombria")
             break
         elif escolha == "2":
@@ -729,7 +600,7 @@ def combate_inimigos(escolha):
 
     opcoes_combate = [f"{i+1}. Lancar {feitico} ({custo} Mana)" for i, (feitico, custo) in enumerate([
         ("Bola de Fogo", 20), ("Escudo Arcano", 20), ("Visao Mistica", 10),
-        ("Raio Congelante", 25), ("Ilusao", 15), ("Cura Menor", 15)
+        ("Raio Congelante", 25), ("Ilusao", 15), ("Cura Menor", 15), ("Balada Lendaria", 15)
     ]) if feitico in jogador["feiticos"]] + [f"{len(jogador['feiticos'])+1}. Tentar fugir"]
 
     while inimigo_atual["hp_atual"] > 0 and jogador["saude"] > 0:
@@ -759,7 +630,6 @@ def combate_inimigos(escolha):
                         dano = 20 if feitico_escolhido in inimigo_atual["fraqueza"] else 5
                     elif feitico_escolhido == "Visao Mistica":
                         dano = 10
-                        jogador["conhecimento"] += 5
                     elif feitico_escolhido == "Cura Menor":
                         jogador["saude"] = min(jogador["saude_max"], jogador["saude"] + 20)
                         print("Voce usou Cura Menor, restaurando sua saude.")
@@ -769,10 +639,10 @@ def combate_inimigos(escolha):
                         jogador["escudo_turnos"] = 2
                         dano = 0
                     elif feitico_escolhido == "Golpe Forte":
-                        dano = 20 + jogador["forca"] // 2
+                        dano = 30  # Ajustado para ser fixo, sem depender de forca
                     elif feitico_escolhido == "Furtividade":
                         print("Voce tenta se esconder nas sombras...")
-                        if random.random() < jogador["destreza"] / 20:
+                        if random.random() < 0.75:  # Aumentei a chance de sucesso
                             print("Voce escapa do combate!")
                             return "ruinas_antigas"
                         else:
@@ -781,10 +651,9 @@ def combate_inimigos(escolha):
                     elif feitico_escolhido == "Inspiracao":
                         print("Voce inspira a si mesmo, aumentando ligeiramente seu proximo ataque.")
                         dano = 0
-                    elif feitico_escolhido == "Cura Menor":
-                        jogador["saude"] = min(jogador["saude_max"], jogador["saude"] + 25)
-                        print("Voce canaliza energia divina para curar suas feridas.")
-                        dano = 0
+                    elif feitico_escolhido == "Balada Lendaria":
+                        dano = 50
+                        print("Sua balada ressoa com poder!")
 
                     if dano > 0:
                         if "esquiva" in inimigo_atual and random.random() < inimigo_atual["esquiva"]:
@@ -796,8 +665,6 @@ def combate_inimigos(escolha):
                     if inimigo_atual["hp_atual"] <= 0:
                         print(f"Voce derrotou {inimigo_atual['nome']}!")
                         jogador["vitorias"] += 1
-                        jogador["xp"] += 40
-                        verificar_nivel()
                         if random.random() < 0.6:
                             jogador["inventario"].append("Pocao de Mana")
                             print("Voce encontrou uma Pocao de Mana!")
@@ -847,33 +714,38 @@ def combate_inimigos(escolha):
 def altar_sacrificio(escolha):
     global sacerdote_vivo, sacerdote
     if sacerdote is None:
-        sacerdote = {"nome": "Sumo Sacerdote", "hp": 100, "mana": 80, "dano_magico": 25, "texto": "O Sumo Sacerdote do culto esta realizando o ritual!", "fraqueza": ["Segredo do Culto", "Balada Lendaria"]}
+        sacerdote = {"nome": "Sumo Sacerdote", "hp": 60, "mana": 50, "dano_magico": 15, "texto": "O Sumo Sacerdote do culto esta realizando o ritual!", "fraqueza": ["Segredo do Culto", "Balada Lendaria"]}
         sacerdote_vivo = True
 
     while sacerdote_vivo and jogador["saude"] > 0:
         print(f"\n--- Altar de Sacrificio ---")
-        print(f"{sacerdote['texto']} HP: {sacerdote['hp']}/{100}, Mana: {sacerdote['mana']}/{80}")
+        print(f"{sacerdote['texto']} HP: {sacerdote['hp']}/{60}, Mana: {sacerdote['mana']}/{50}")
         mostrar_status()
         opcoes_climax = [f"{i+1}. Lancar {feitico} ({custo} Mana)" for i, (feitico, custo) in enumerate([
-            ("Bola de Fogo", 20), ("Raio Congelante", 25), ("Ilusao", 15), ("Visao Mistica", 10), ("Cura Menor", 15)
-        ]) if feitico in jogador["feiticos"]] + ["{}. Tentar selar o ritual (Pergaminho de Selamento)".format(len(jogador['feiticos']) + 1)]
-
+            ("Bola de Fogo", 20), ("Raio Congelante", 25), ("Ilusao", 15), ("Visao Mistica", 10), ("Cura Menor", 15), ("Balada Lendaria", 15)
+        ]) if feitico in jogador["feiticos"]]
+        num_feiticos = len(opcoes_climax)
+        opcoes_climax.append(f"{num_feiticos + 1}. Tentar selar o ritual (Pergaminho de Selamento)")
+        if "Pingente Misterioso" in jogador["inventario"]:
+            opcoes_climax.append(f"{num_feiticos + 2}. Usar o Pingente Misterioso")
         if "Aliada Eremita" in jogador["inventario"]:
-            opcoes_climax.append("{}. Pedir ajuda a Eremita".format(len(opcoes_climax) + 1))
+            opcoes_climax.append(f"{num_feiticos + 3 if 'Pingente Misterioso' in jogador['inventario'] else num_feiticos + 2}. Pedir ajuda a Eremita")
+        opcoes_climax.append(f"{len(opcoes_climax) + 1}. Fugir")
+        opcoes_climax.append(f"{len(opcoes_climax) + 1}. Salvar jogo")
+        opcoes_climax.append(f"{len(opcoes_climax) + 1}. Mostrar Status")
 
-        opcoes_climax.append("{}. Fugir".format(len(opcoes_climax) + 1))
-        opcoes_climax.append("{}. Salvar jogo".format(len(opcoes_climax) + 1))
-        opcoes_climax.append("{}. Mostrar Status".format(len(opcoes_climax) + 1))
-
+        print("Escolha uma acao:")
+        for opcao in opcoes_climax:
+            print(opcao)
         escolha_climax = input(f"Escolha (1-{len(opcoes_climax)}): ")
 
         if escolha_climax.isdigit():
             escolha_index = int(escolha_climax) - 1
-            num_feiticos = len(jogador['feiticos'])
+            num_feiticos_base = len([f for f in jogador['feiticos'] if f in ["Bola de Fogo", "Raio Congelante", "Ilusao", "Visao Mistica", "Cura Menor", "Balada Lendaria"]])
 
-            if 0 <= escolha_index < num_feiticos:
-                feitico_escolhido = [f for f in jogador['feiticos']][escolha_index]
-                custo = [20 if f == "Bola de Fogo" else 25 if f == "Raio Congelante" else 15 if f == "Ilusao" else 10 if f == "Visao Mistica" else 15 for f in jogador['feiticos']][escolha_index]
+            if 0 <= escolha_index < num_feiticos_base:
+                feitico_escolhido = [f for f in jogador['feiticos'] if f in ["Bola de Fogo", "Raio Congelante", "Ilusao", "Visao Mistica", "Cura Menor", "Balada Lendaria"]][escolha_index]
+                custo = [20 if f == "Bola de Fogo" else 25 if f == "Raio Congelante" else 15 if f == "Ilusao" else 10 if f == "Visao Mistica" else 15 for f in jogador['feiticos'] if f in ["Bola de Fogo", "Raio Congelante", "Ilusao", "Visao Mistica", "Cura Menor", "Balada Lendaria"]][escolha_index]
 
                 if jogador["mana"] >= custo:
                     jogador["mana"] -= custo
@@ -886,13 +758,12 @@ def altar_sacrificio(escolha):
                         dano_jogador = 25
                     elif feitico_escolhido == "Visao Mistica":
                         dano_jogador = 15
-                        jogador["conhecimento"] += 5
                     elif feitico_escolhido == "Cura Menor":
                         jogador["saude"] = min(jogador["saude_max"], jogador["saude"] + 25)
                         print("Voce usou Cura Menor, restaurando sua saude.")
                         dano_jogador = 0
                     elif feitico_escolhido == "Golpe Forte":
-                        dano_jogador = 25 + jogador["forca"]
+                        dano_jogador = 30
                     elif feitico_escolhido == "Inspiracao":
                         print("Voce se sente mais inspirado!")
                         dano_jogador = 0
@@ -903,11 +774,10 @@ def altar_sacrificio(escolha):
                     if dano_jogador > 0:
                         sacerdote["hp"] -= dano_jogador
                         print(f"Voce usou {feitico_escolhido}, causando {dano_jogador} de dano!")
-
                 else:
                     print("Mana insuficiente!")
 
-            elif escolha_index == num_feiticos:
+            elif escolha_index == num_feiticos_base:
                 if "Pergaminho de Selamento" in jogador["inventario"]:
                     print("Voce le o pergaminho antigo. O ritual e desfeito! O mago negro nao renascera.")
                     fim_jogo("Vitoria! Vaeloria esta salva.")
@@ -915,7 +785,14 @@ def altar_sacrificio(escolha):
                 else:
                     print("Voce nao tem o pergaminho de selamento!")
 
-            elif "Aliada Eremita" in jogador["inventario"] and escolha_index == num_feiticos + 1:
+            elif "Pingente Misterioso" in jogador["inventario"] and escolha_index == num_feiticos_base + 1:
+                print("Voce usa o Pingente Misterioso, que brilha intensamente. Um segredo do culto e revelado, enfraquecendo o sacerdote!")
+                jogador["inventario"].append("Segredo do Culto")
+                jogador["inventario"].remove("Pingente Misterioso")
+                sacerdote["hp"] -= 10
+                print("O Sumo Sacerdote perde 10 HP!")
+
+            elif "Aliada Eremita" in jogador["inventario"] and escolha_index == (num_feiticos_base + 2 if "Pingente Misterioso" in jogador["inventario"] else num_feiticos_base + 1):
                 print("A eremita ataca o sacerdote com magia ancestral!")
                 dano_eremita = random.randint(20, 40)
                 sacerdote["hp"] -= dano_eremita
@@ -924,7 +801,7 @@ def altar_sacrificio(escolha):
                     print("A eremita e gravemente ferida!")
                     jogador["inventario"].remove("Aliada Eremita")
 
-            elif escolha_index == num_feiticos + (2 if "Aliada Eremita" in jogador["inventario"] else 1):
+            elif escolha_index == (num_feiticos_base + (3 if "Pingente Misterioso" in jogador["inventario"] else 2) if "Aliada Eremita" in jogador["inventario"] else num_feiticos_base + (2 if "Pingente Misterioso" in jogador["inventario"] else 1)):
                 print("Voce tenta fugir do altar...")
                 sorte_fuga = random.randint(1, 10)
                 if sorte_fuga > 3:
@@ -934,25 +811,23 @@ def altar_sacrificio(escolha):
                 else:
                     print("Voce nao consegue fugir!")
 
-            elif escolha_index == num_feiticos + (3 if "Aliada Eremita" in jogador["inventario"] else 2):
+            elif escolha_index == (num_feiticos_base + (4 if "Pingente Misterioso" in jogador["inventario"] else 3) if "Aliada Eremita" in jogador["inventario"] else num_feiticos_base + (3 if "Pingente Misterioso" in jogador["inventario"] else 2)):
                 salvar_jogo()
-            elif escolha_index == num_feiticos + (4 if "Aliada Eremita" in jogador["inventario"] else 3):
+
+            elif escolha_index == (num_feiticos_base + (5 if "Pingente Misterioso" in jogador["inventario"] else 4) if "Aliada Eremita" in jogador["inventario"] else num_feiticos_base + (4 if "Pingente Misterioso" in jogador["inventario"] else 3)):
                 mostrar_status()
+
             else:
                 print("Escolha invalida.")
 
             if sacerdote["hp"] > 0:
-                feitico_sacerdote = random.choice(["Raio Sombrio", "Drenar Vida"])
                 dano_sacerdote = sacerdote["dano_magico"]
-                if feitico_sacerdote == "Drenar Vida":
-                    cura_sacerdote = random.randint(10, 20)
-                    sacerdote["hp"] = min(100, sacerdote["hp"] + cura_sacerdote)
-                    dano_sacerdote = random.randint(15, 25)
-                    jogador["saude"] -= dano_sacerdote
-                    print(f"O Sumo Sacerdote lanca Drenar Vida, curando-se em {cura_sacerdote} e causando {dano_sacerdote} de dano!")
-                else:
-                    jogador["saude"] -= dano_sacerdote
-                    print(f"O Sumo Sacerdote lanca Raio Sombrio, causando {dano_sacerdote} de dano!")
+                if "Amuleto de Protecao" in jogador["inventario"]:
+                    dano_sacerdote = int(dano_sacerdote * 0.8)
+                if "Pingente Misterioso" in jogador["inventario"]:
+                    dano_sacerdote = int(dano_sacerdote * 0.8)
+                jogador["saude"] -= dano_sacerdote
+                print(f"O Sumo Sacerdote lanca Raio Sombrio, causando {dano_sacerdote} de dano!")
 
                 if jogador["saude"] <= 0:
                     fim_jogo("Voce foi derrotado pelo Sumo Sacerdote. O mago negro renasceu.")
