@@ -665,7 +665,7 @@ Você chega às ruínas antigas. Um Guardião Rúnico bloqueia o caminho.
 5. Salvar jogo
 6. Mostrar Status
         """)
-        escolha = input("Escolha (1-6):
+        escolha = input("Escolha (1-6):")
         if escolha == "1":
             global inimigo_atual
             inimigo_atual = {"nome": "Guardião Rúnico", "hp": 70, "dano": 18, "texto": "O Guardião Rúnico, feito de pedra e magia, se move!", "fraqueza": ["Golpe Forte", "Fúria"], "esquiva": 0.1}
