@@ -419,60 +419,61 @@ Você encontra um conselheiro de Vaeloria, mas ele parece nervoso. Ele admite: '
             mostrar_status()
         else:
             print("Escolha inválida. Tente novamente.")
-
-def floresta_sombria(escolha):
-    if random.random() < 0.4:
-        if random.random() < 0.3 and "Dica do Traidor" in jogador["inventario"]:
-            exibir_cena("encontro_truidor")
-        else:
-            evento_aleatorio(None)
-        return
+            
+Def floresta_sombria(escolha):
     while True:
         print(f"""
-Mana: {jogador['mana']}/{jogador['mana_max']} | Saúde: {jogador['saude']}/{jogador['saude_max']} | Nível: {jogador['nivel']}
-Inventário: {jogador['inventario']}
-Você entra na Floresta Sombria. O ar é pesado, e sussurros ecoam.
-1. Explorar uma trilha estreita
-2. Lançar Visão Mística (-10 Mana)
-3. Seguir um ruído estranho
-4. Usar Poção de Mana (se tiver)
-5. Salvar jogo
-6. Mostrar Status
-        """)
-        escolha = input("Escolha (1-6): ")
-        if escolha == "1":
-            exibir_cena("combate_inimigos")
-            break
-        elif escolha == "2":
-            if jogador["mana"] >= 10 and "Visão Mística" in jogador["feitiços"]:
-                jogador["mana"] -= 10
-                print("Visão Mística revela uma armadilha. Você encontra ruínas antigas.")
-                jogador["conhecimento"] += 5
-                jogador["xp"] += 20
-                verificar_nivel()
-                exibir_cena("ruinas_antigas")
-                break
-            elif "Visão Mística" not in jogador["feitiços"]:
-                print("Você não conhece esse feitiço.")
-            else:
-                print("Mana insuficiente!")
-        elif escolha == "3":
-            exibir_cena("encontro_eremita")
-            break
-        elif escolha == "4":
-            if "Poção de Mana" in jogador["inventario"]:
-                jogador["mana"] = min(jogador["mana_max"], jogador["mana"] + 30)
-                jogador["inventario"].remove("Poção de Mana")
-                print("Você usou uma Poção de Mana, restaurando 30 de Mana.")
-            else:
-                print("Você não tem Poções de Mana.")
-        elif escolha == "5":
-            salvar_jogo()
-        elif escolha == "6":
-            mostrar_status()
-        else:
-            print("Escolha inválida. Tente novamente.")
-
+            Mana: {jogador['mana']}/{jogador['mana_max']} | Saúde: {jogador['saude']}/{jogador['saude_max']} | Nível: {jogador['nivel']}
+            Inventário: {jogador['inventario']}
+            Você entra na Floresta Sombria. O ar é pesado, e sussurros ecoam.
+            1. Explorar uma trilha estreita
+            2. Lançar Visão Mística (-10 Mana)
+            3. Seguir um ruído estranho
+            4. Usar Poção de Mana (se tiver)
+            5. Salvar jogo
+            6. Mostrar Status
+            """)
+escolha = input("Escolha (1-6): ")
+if escolha == "1":
+if random.random() < 0.4:
+if random.random() < 0.3 and "Dica do Traidor" in jogador["inventario"]:
+exibir_cena("encontro_truidor")
+break
+else:
+evento_aleatorio(None)
+break # break para sair do loop após o evento
+else:
+exibir_cena("combate_inimigos")
+break
+elif escolha == "2":
+if jogador["mana"] >= 10 and "Visão Mística" in jogador["feitiços"]:
+jogador["mana"] -= 10
+print("Visão Mística revela uma armadilha. Você encontra ruínas antigas.")
+jogador["conhecimento"] += 5
+jogador["xp"] += 20
+verificar_nivel()
+exibir_cena("ruinas_antigas")
+break
+elif "Visão Mística" not in jogador["feitiços"]:
+print("Você não conhece esse feitiço.")
+else:
+print("Mana insuficiente!")
+elif escolha == "3":
+exibir_cena("encontro_eremita")
+break
+elif escolha == "4":
+if "Poção de Mana" in jogador["inventario"]:
+jogador["mana"] = min(jogador["mana_max"], jogador["mana"] + 30)
+jogador["inventario"].remove("Poção de Mana")
+print("Você usou uma Poção de Mana, restaurando 30 de Mana.")
+else:
+print("Você não tem Poções de Mana.")
+elif escolha == "5":
+salvar_jogo()
+elif escolha == "6":
+mostrar_status()
+else:
+print("Escolha inválida. Tente novamente.") 
 def combate_inimigos(escolha):
     global inimigo_atual
     if escolha is None:
@@ -645,61 +646,6 @@ Você encontra uma eremita idosa. Ela diz: 'O culto tenta ressuscitar um mago ne
         elif escolha == "4":
             exibir_cena("ruinas_antigas")
             break
-        elif escolha == "5":
-            salvar_jogo()
-        elif escolha == "6":
-            mostrar_status()
-        else:
-            print("Escolha inválida. Tente novamente.")
-
-def ruinas_antigas(escolha):
-    while True:
-        print(f"""
-Mana: {jogador['mana']}/{jogador['mana_max']} | Saúde: {jogador['saude']}/{jogador['saude_max']} | Nível: {jogador['nivel']}
-Inventário: {jogador['inventario']}
-Você chega às ruínas antigas. Um Guardião Rúnico bloqueia o caminho.
-1. Combater o Guardião
-2. Usar Visão Mística para evitar o Guardião (-10 Mana)
-3. Usar Poção de Mana (se tiver)
-4. Usar Cura Menor (-15 Mana, se disponível)
-5. Salvar jogo
-6. Mostrar Status
-        """)
-        escolha = input("Escolha (1-6):")
-        if escolha == "1":
-            global inimigo_atual
-            inimigo_atual = {"nome": "Guardião Rúnico", "hp": 70, "dano": 18, "texto": "O Guardião Rúnico, feito de pedra e magia, se move!", "fraqueza": ["Golpe Forte", "Fúria"], "esquiva": 0.1}
-            exibir_cena("combate_inimigos")
-            break
-        elif escolha == "2":
-            if jogador["mana"] >= 10 and "Visão Mística" in jogador["feitiços"]:
-                jogador["mana"] -= 10
-                print("Visão Mística revela uma passagem secreta. Você evita o Guardião.")
-                jogador["conhecimento"] += 10
-                jogador["xp"] += 30
-                verificar_nivel()
-                exibir_cena("altar_sacrificio")
-                break
-            elif "Visão Mística" not in jogador["feitiços"]:
-                print("Você não conhece esse feitiço.")
-            else:
-                print("Mana insuficiente!")
-        elif escolha == "3":
-            if "Poção de Mana" in jogador["inventario"]:
-                jogador["mana"] = min(jogador["mana_max"], jogador["mana"] + 30)
-                jogador["inventario"].remove("Poção de Mana")
-                print("Você usou uma Poção de Mana, restaurando 30 de Mana.")
-            else:
-                print("Você não tem Poções de Mana.")
-        elif escolha == "4":
-            if jogador["mana"] >= 15 and "Cura Menor" in jogador["feitiços"]:
-                jogador["mana"] -= 15
-                jogador["saude"] = min(jogador["saude_max"], jogador["saude"] + 20)
-                print("Você usou Cura Menor, restaurando sua saúde.")
-            elif "Cura Menor" not in jogador["feitiços"]:
-                print("Você não conhece esse feitiço.")
-            else:
-                print("Mana insuficiente!")
         elif escolha == "5":
             salvar_jogo()
         elif escolha == "6":
