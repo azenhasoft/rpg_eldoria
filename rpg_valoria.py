@@ -2,7 +2,7 @@ import time
 import sys
 
 def pausar(texto):
-    print(texto, flush=True)  # Força a saída no Pydroid 3
+    print(texto, flush=True)
     time.sleep(2)
 
 def introducao():
@@ -20,8 +20,8 @@ def exibir_menu_classe():
 def escolher_classe():
     while True:
         exibir_menu_classe()
-        print("Digite o número da sua classe (1-4): ", end="", flush=True)  # Prompt visível
-        escolha = input().strip()  # Remove espaços extras
+        print("Digite o número da sua classe (1-4): ", end="", flush=True)
+        escolha = input().strip()
         classes = {
             "1": "guerreiro",
             "2": "mago",
@@ -46,7 +46,7 @@ def habilidade_classe(classe):
 
 def jogo():
     introducao()
-    pausar("Iniciando o jogo...")  # Mensagem de depuração
+    pausar("Iniciando o jogo...")
     classe = escolher_classe()
     habilidade = habilidade_classe(classe)
     
@@ -146,4 +146,114 @@ def caminho_templo(classe, habilidade):
         else:
             pausar("Escolha inválida! Digite 1, 2 ou 3.")
 
-def caminho_neg
+def caminho_negociacao(classe, habilidade):
+    pausar("\nVocê se aproxima da caverna de Valthor e oferece uma trégua.")
+    pausar(f"Usando sua {habilidade}, você tenta convencer o dragão.")
+    pausar("Valthor ouve, mas exige algo em troca. Ele propõe:")
+    pausar("1. Oferecer sua lealdade eterna como servo.")
+    pausar("2. Entregar a vila de Eldoria como tributo.")
+
+    while True:
+        print("O que você faz? (1, 2): ", end="", flush=True)
+        escolha = input().strip()
+        if escolha == "1":
+            if classe == "bardo":
+                pausar("Sua música acalma Valthor, que aceita sua lealdade.")
+                pausar("Você salva Eldoria, mas vive como servo do dragão.")
+                final_agridoce()
+            else:
+                pausar("Valthor aceita, mas logo se cansa de você e o devora.")
+                final_ruim()
+            break
+        elif escolha == "2":
+            pausar("Você trai Eldoria, e Valthor poupa sua vida.")
+            pausar("Você vive, mas carrega a culpa pela destruição da vila.")
+            final_agridoce()
+            break
+        else:
+            pausar("Escolha inválida! Digite 1 ou 2.")
+
+def caminho_aliados(classe, habilidade):
+    pausar("\nVocê viaja para Thornvale para recrutar aliados contra Valthor.")
+    pausar(f"Usando sua {habilidade}, você tenta convencer os guerreiros locais.")
+    pausar("O líder de Thornvale exige uma prova de sua coragem:")
+    pausar("1. Derrotar um lobo gigante na arena.")
+    pausar("2. Roubar um artefato dos bandidos locais.")
+
+    while True:
+        print("O que você faz? (1, 2): ", end="", flush=True)
+        escolha = input().strip()
+        if escolha == "1":
+            if classe in ["guerreiro", "mago"]:
+                pausar("Você derrota o lobo com sua habilidade, ganhando aliados.")
+                pausar("Com o exército, você enfrenta e derrota Valthor!")
+                final_bom()
+            else:
+                pausar("O lobo é forte demais, e você é gravemente ferido.")
+                pausar("Sem aliados, você não pode enfrentar Valthor.")
+                final_ruim()
+            break
+        elif escolha == "2":
+            if classe == "ladino":
+                pausar("Você rouba o artefato com sucesso, impressionando Thornvale.")
+                pausar("Com aliados, você derrota Valthor!")
+                final_bom()
+            else:
+                pausar("Você é pego pelos bandidos e não consegue aliados.")
+                pausar("Sem apoio, Valthor destrói Eldoria.")
+                final_ruim()
+            break
+        else:
+            pausar("Escolha inválida! Digite 1 ou 2.")
+
+def caminho_floresta(classe, habilidade):
+    pausar("\nVocê entra na Floresta Sombria, onde dizem haver um orbe místico.")
+    pausar(f"Usando sua {habilidade}, você enfrenta perigos sobrenaturais.")
+    pausar("Você encontra o orbe, mas um espírito guardião aparece!")
+    pausar("1. Tentar convencer o espírito a entregar o orbe.")
+    pausar("2. Lutar contra o espírito pelo orbe.")
+
+    while True:
+        print("O que você faz? (1, 2): ", end="", flush=True)
+        escolha = input().strip()
+        if escolha == "1":
+            if classe == "bardo":
+                pausar("Seu charme convence o espírito, que lhe dá o orbe.")
+                pausar("Com o orbe, você enfraquece Valthor e o derrota!")
+                final_bom()
+            else:
+                pausar("O espírito não confia em você e o amaldiçoa.")
+                pausar("Você perece na floresta, e Eldoria é destruída.")
+                final_ruim()
+            break
+        elif escolha == "2":
+            if classe in ["guerreiro", "mago"]:
+                pausar("Você derrota o espírito e toma o orbe!")
+                pausar("Com o orbe, você mata Valthor e salva Eldoria.")
+                final_bom()
+            else:
+                pausar("O espírito é poderoso demais e o derrota.")
+                pausar("Sem o orbe, Eldoria cai perante Valthor.")
+                final_ruim()
+            break
+        else:
+            pausar("Escolha inválida! Digite 1 ou 2.")
+
+def final_bom():
+    pausar("\nVocê derrota Valthor e salva Eldoria!")
+    pausar("Os aldeões o celebram como herói, e seu nome é lembrado por gerações.")
+    pausar("FIM - Final Bom")
+
+def final_ruim():
+    pausar("\nVocê falha em sua missão e morre tragicamente.")
+    pausar("Eldoria é destruída por Valthor, e seu nome é esquecido.")
+    pausar("FIM - Final Ruim")
+
+def final_agridoce():
+    pausar("\nVocê evita a destruição de Eldoria, mas a um custo pessoal.")
+    pausar("Você vive com o peso de suas escolhas, longe da glória.")
+    pausar("FIM - Final Agridoce")
+
+if __name__ == "__main__":
+    jogo()
+    print("Programa finalizado!", flush=True)
