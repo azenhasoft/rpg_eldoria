@@ -1,7 +1,8 @@
 import time
+import sys
 
 def pausar(texto):
-    print(texto)
+    print(texto, flush=True)  # Força a saída no Pydroid 3
     time.sleep(2)
 
 def introducao():
@@ -19,7 +20,8 @@ def exibir_menu_classe():
 def escolher_classe():
     while True:
         exibir_menu_classe()
-        escolha = input("Digite o número da sua classe (1-4): ")
+        print("Digite o número da sua classe (1-4): ", end="", flush=True)  # Prompt visível
+        escolha = input().strip()  # Remove espaços extras
         classes = {
             "1": "guerreiro",
             "2": "mago",
@@ -31,7 +33,7 @@ def escolher_classe():
             pausar(f"Você escolheu ser um {classe.capitalize()}!")
             return classe
         else:
-            print("Escolha inválida! Digite um número de 1 a 4.")
+            pausar("Escolha inválida! Digite um número de 1 a 4.")
 
 def habilidade_classe(classe):
     habilidades = {
@@ -44,6 +46,7 @@ def habilidade_classe(classe):
 
 def jogo():
     introducao()
+    pausar("Iniciando o jogo...")  # Mensagem de depuração
     classe = escolher_classe()
     habilidade = habilidade_classe(classe)
     
@@ -57,7 +60,8 @@ def jogo():
         pausar("3. Negociar com Valthor, tentando evitar o confronto.")
         pausar("4. Recrutar aliados na cidade vizinha de Thornvale.")
         pausar("5. Explorar a Floresta Sombria em busca de um artefato lendário.")
-        escolha = input("Qual caminho você escolhe? (1-5): ")
+        print("Qual caminho você escolhe? (1-5): ", end="", flush=True)
+        escolha = input().strip()
 
         if escolha == "1":
             caminho_caverna(classe, habilidade)
@@ -75,7 +79,7 @@ def jogo():
             caminho_floresta(classe, habilidade)
             break
         else:
-            print("Escolha inválida! Digite 1, 2, 3, 4 ou 5.")
+            pausar("Escolha inválida! Digite 1, 2, 3, 4 ou 5.")
 
 def caminho_caverna(classe, habilidade):
     pausar("\nVocê entra na caverna escura de Valthor, ouvindo seu rugido ecoar.")
@@ -85,7 +89,8 @@ def caminho_caverna(classe, habilidade):
     pausar("2. Tentar se esconder e atacar pelas costas.")
 
     while True:
-        escolha = input("O que você faz? (1, 2): ")
+        print("O que você faz? (1, 2): ", end="", flush=True)
+        escolha = input().strip()
         if escolha == "1":
             if classe == "guerreiro":
                 pausar("Com sua força, você enfrenta Valthor em um combate feroz!")
@@ -107,7 +112,7 @@ def caminho_caverna(classe, habilidade):
                 final_ruim()
             break
         else:
-            print("Escolha inválida! Digite 1 ou 2.")
+            pausar("Escolha inválida! Digite 1 ou 2.")
 
 def caminho_templo(classe, habilidade):
     pausar("\nVocê viaja até o templo em ruínas, enfrentando armadilhas mortais.")
@@ -119,7 +124,8 @@ def caminho_templo(classe, habilidade):
     pausar("3. Usar sua habilidade para estabilizar o templo.")
 
     while True:
-        escolha = input("O que você faz? (1, 2, 3): ")
+        print("O que você faz? (1, 2, 3): ", end="", flush=True)
+        escolha = input().strip()
         if escolha == "1":
             pausar("Você escapa do templo e usa a lança para matar Valthor!")
             final_bom()
@@ -138,9 +144,6 @@ def caminho_templo(classe, habilidade):
                 final_ruim()
             break
         else:
-            print("Escolha inválida! Digite 1, 2 ou 3.")
+            pausar("Escolha inválida! Digite 1, 2 ou 3.")
 
-def caminho_negociacao(classe, habilidade):
-    pausar("\nVocê se aproxima da caverna de Valthor e oferece uma trégua.")
-    pausar(f"Usando sua {habilidade}, você tenta convencer o dragão.")
-    paus
+def caminho_neg
