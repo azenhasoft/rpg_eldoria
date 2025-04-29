@@ -7,7 +7,7 @@ def pausar(texto):
 
 def introducao():
     pausar("Bem-vindo a 'A Sombra do Dragão', um RPG de fantasia medieval!")
-    pausar("Você é um aventureiro em um reino ameaçado por Valthor, um dragão ancestral.")
+    pausar("Você é um aventureiro em um reino ameaçado por um dragão ancestral.")
     pausar("Sua missão é salvar a vila de Eldoria do terror de Valthor.")
 
 def exibir_menu_classe():
@@ -44,42 +44,80 @@ def habilidade_classe(classe):
     }
     return habilidades[classe]
 
-def jogo():
-    introducao()
-    pausar("Iniciando o jogo...")
-    classe = escolher_classe()
-    habilidade = habilidade_classe(classe)
-    
-    pausar("\nVocê chega à vila de Eldoria, onde o dragão Valthor aterroriza os moradores.")
-    pausar("O líder da vila implora sua ajuda para derrotar a besta.")
-    pausar("Você descobre cinco caminhos para enfrentar a ameaça:")
-
+def reiniciar_jogo():
     while True:
-        pausar("\n1. Entrar na caverna de Valthor e enfrentá-lo diretamente.")
-        pausar("2. Buscar a Lança do Destino em um templo antigo.")
-        pausar("3. Negociar com Valthor, tentando evitar o confronto.")
-        pausar("4. Recrutar aliados na cidade vizinha de Thornvale.")
-        pausar("5. Explorar a Floresta Sombria em busca de um artefato lendário.")
-        print("Qual caminho você escolhe? (1-5): ", end="", flush=True)
-        escolha = input().strip()
-
-        if escolha == "1":
-            caminho_caverna(classe, habilidade)
-            break
-        elif escolha == "2":
-            caminho_templo(classe, habilidade)
-            break
-        elif escolha == "3":
-            caminho_negociacao(classe, habilidade)
-            break
-        elif escolha == "4":
-            caminho_aliados(classe, habilidade)
-            break
-        elif escolha == "5":
-            caminho_floresta(classe, habilidade)
-            break
+        print("\nDeseja jogar novamente? (sim/não): ", end="", flush=True)
+        resposta = input().strip().lower()
+        if resposta in ["sim", "s"]:
+            pausar("Reiniciando a aventura...")
+            return True
+        elif resposta in ["não", "nao", "n"]:
+            pausar("Obrigado por jogar! Até a próxima aventura!")
+            return False
         else:
-            pausar("Escolha inválida! Digite 1, 2, 3, 4 ou 5.")
+            pausar("Escolha inválida! Digite 'sim' ou 'não'.")
+
+def tentar_novamente_antes_derrota():
+    while True:
+        print("\nVocê foi derrotado! Deseja tentar novamente? (sim/não): ", end="", flush=True)
+        resposta = input().strip().lower()
+        if resposta in ["sim", "s"]:
+            pausar("Reiniciando a aventura...")
+            return True
+        elif resposta in ["não", "nao", "n"]:
+            return False
+        else:
+            pausar("Escolha inválida! Digite 'sim' ou 'não'.")
+
+def jogo():
+    while True:
+        introducao()
+        pausar("Iniciando o jogo...")
+        classe = escolher_classe()
+        habilidade = habilidade_classe(classe)
+        
+        pausar("\nVocê chega à vila de Eldoria, onde o dragão Valthor aterroriza os moradores.")
+        pausar("O líder da vila implora sua ajuda para derrotar a besta.")
+        pausar("Você descobre cinco caminhos para enfrentar a ameaça:")
+
+        while True:
+            pausar("\n1. Entrar na caverna de Valthor e enfrentá-lo diretamente.")
+            pausar("2. Buscar a Lança do Destino em um templo antigo.")
+            pausar("3. Negociar com Valthor, tentando evitar o confronto.")
+            pausar("4. Recrutar aliados na cidade vizinha de Thornvale.")
+            pausar("5. Explorar a Floresta Sombria em busca de um artefato lendário.")
+            escolha = input("Qual caminho você escolhe? (1-5): ").strip()
+
+            if escolha == "1":
+                resultado = caminho_caverna(classe, habilidade)
+                if resultado == "derrota" and tentar_novamente_antes_derrota():
+                    continue  # Reinicia o loop interno para nova tentativa
+                break
+            elif escolha == "2":
+                resultado = caminho_templo(classe, habilidade)
+                if resultado == "derrota" and tentar_novamente_antes_derrota():
+                    continue
+                break
+            elif escolha == "3":
+                resultado = caminho_negociacao(classe, habilidade)
+                if resultado == "derrota" and tentar_novamente_antes_derrota():
+                    continue
+                break
+            elif escolha == "4":
+                resultado = caminho_aliados(classe, habilidade)
+                if resultado == "derrota" and tentar_novamente_antes_derrota():
+                    continue
+                break
+            elif escolha == "5":
+                resultado = caminho_floresta(classe, habilidade)
+                if resultado == "derrota" and tentar_novamente_antes_derrota():
+                    continue
+                break
+            else:
+                pausar("Escolha inválida! Digite 1, 2, 3, 4 ou 5.")
+
+        if not reiniciar_jogo():
+            break
 
 def caminho_caverna(classe, habilidade):
     pausar("\nVocê entra na caverna escura de Valthor, ouvindo seu rugido ecoar.")
@@ -96,21 +134,21 @@ def caminho_caverna(classe, habilidade):
                 pausar("Com sua força, você enfrenta Valthor em um combate feroz!")
                 pausar("Após uma batalha épica, você corta a cabeça do dragão.")
                 final_bom()
+                return "vitória"
             else:
                 pausar("Você tenta enfrentar Valthor, mas ele é forte demais!")
                 pausar("O dragão o incinera com seu sopro flamejante.")
-                final_ruim()
-            break
+                return "derrota"
         elif escolha == "2":
             if classe == "ladino":
                 pausar("Você se esgueira e acerta um golpe crítico nas costas de Valthor!")
                 pausar("O dragão cai, e você se torna um herói.")
                 final_bom()
+                return "vitória"
             else:
                 pausar("Você tenta se esconder, mas Valthor o encontra facilmente.")
                 pausar("Ele o esmaga com sua cauda.")
-                final_ruim()
-            break
+                return "derrota"
         else:
             pausar("Escolha inválida! Digite 1 ou 2.")
 
@@ -129,20 +167,19 @@ def caminho_templo(classe, habilidade):
         if escolha == "1":
             pausar("Você escapa do templo e usa a lança para matar Valthor!")
             final_bom()
-            break
+            return "vitória"
         elif escolha == "2":
             pausar("Você encontra ouro, mas o templo desaba, soterrando você.")
-            final_ruim()
-            break
+            return "derrota"
         elif escolha == "3":
             if classe == "mago":
                 pausar("Você conjura um feitiço para estabilizar o templo.")
                 pausar("Com a lança e tesouros adicionais, você derrota Valthor.")
                 final_bom()
+                return "vitória"
             else:
                 pausar("Sua tentativa falha, e o templo desmorona sobre você.")
-                final_ruim()
-            break
+                return "derrota"
         else:
             pausar("Escolha inválida! Digite 1, 2 ou 3.")
 
@@ -160,16 +197,16 @@ def caminho_negociacao(classe, habilidade):
             if classe == "bardo":
                 pausar("Sua música acalma Valthor, que aceita sua lealdade.")
                 pausar("Você salva Eldoria, mas vive como servo do dragão.")
-                final_agridoce()
+                final_ambiguo()
+                return "vitória"
             else:
                 pausar("Valthor aceita, mas logo se cansa de você e o devora.")
-                final_ruim()
-            break
+                return "derrota"
         elif escolha == "2":
             pausar("Você trai Eldoria, e Valthor poupa sua vida.")
             pausar("Você vive, mas carrega a culpa pela destruição da vila.")
-            final_agridoce()
-            break
+            final_ambiguo()
+            return "vitória"
         else:
             pausar("Escolha inválida! Digite 1 ou 2.")
 
@@ -188,21 +225,21 @@ def caminho_aliados(classe, habilidade):
                 pausar("Você derrota o lobo com sua habilidade, ganhando aliados.")
                 pausar("Com o exército, você enfrenta e derrota Valthor!")
                 final_bom()
+                return "vitória"
             else:
                 pausar("O lobo é forte demais, e você é gravemente ferido.")
                 pausar("Sem aliados, você não pode enfrentar Valthor.")
-                final_ruim()
-            break
+                return "derrota"
         elif escolha == "2":
             if classe == "ladino":
                 pausar("Você rouba o artefato com sucesso, impressionando Thornvale.")
                 pausar("Com aliados, você derrota Valthor!")
                 final_bom()
+                return "vitória"
             else:
                 pausar("Você é pego pelos bandidos e não consegue aliados.")
                 pausar("Sem apoio, Valthor destrói Eldoria.")
-                final_ruim()
-            break
+                return "derrota"
         else:
             pausar("Escolha inválida! Digite 1 ou 2.")
 
@@ -221,21 +258,21 @@ def caminho_floresta(classe, habilidade):
                 pausar("Seu charme convence o espírito, que lhe dá o orbe.")
                 pausar("Com o orbe, você enfraquece Valthor e o derrota!")
                 final_bom()
+                return "vitória"
             else:
                 pausar("O espírito não confia em você e o amaldiçoa.")
                 pausar("Você perece na floresta, e Eldoria é destruída.")
-                final_ruim()
-            break
+                return "derrota"
         elif escolha == "2":
             if classe in ["guerreiro", "mago"]:
                 pausar("Você derrota o espírito e toma o orbe!")
                 pausar("Com o orbe, você mata Valthor e salva Eldoria.")
                 final_bom()
+                return "vitória"
             else:
                 pausar("O espírito é poderoso demais e o derrota.")
                 pausar("Sem o orbe, Eldoria cai perante Valthor.")
-                final_ruim()
-            break
+                return "derrota"
         else:
             pausar("Escolha inválida! Digite 1 ou 2.")
 
@@ -249,10 +286,10 @@ def final_ruim():
     pausar("Eldoria é destruída por Valthor, e seu nome é esquecido.")
     pausar("FIM - Final Ruim")
 
-def final_agridoce():
+def final_ambiguo():
     pausar("\nVocê evita a destruição de Eldoria, mas a um custo pessoal.")
     pausar("Você vive com o peso de suas escolhas, longe da glória.")
-    pausar("FIM - Final Agridoce")
+    pausar("FIM - Final Ambíguo")
 
 if __name__ == "__main__":
     jogo()
