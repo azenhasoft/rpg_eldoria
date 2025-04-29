@@ -13,8 +13,4 @@ Este é um simples jogo de RPG de texto desenvolvido em Python. O jogador assume
 ## Funcionalidades Atuais
 
 * Escolha entre diferentes classes de personagem (Guerreiro, Ladino, Mago, Paladino, Bardo)
-* Combate baseado em texto com diferentes opções de ataque e a possibilidade de usar feitiços
-* Exploração de diferentes locais e interação com personagens
-* Sistema de inventário para coletar itens
-* Funcionalidade de salvar e carregar o jogo
 * Um enredo principal com um clímax e diferentes finais
