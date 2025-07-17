@@ -1,296 +1,276 @@
-import time
-import sys
-
-def pausar(texto):
-    print(texto, flush=True)
-    time.sleep(2)
-
 def introducao():
-    pausar("Bem-vindo a 'A Sombra do Dragão', um RPG de fantasia medieval!")
-    pausar("Você é um aventureiro em um reino ameaçado por um dragão ancestral.")
-    pausar("Sua missão é salvar a vila de Eldoria do terror de Valthor.")
-
-def exibir_menu_classe():
-    pausar("\nEscolha sua classe:")
-    pausar("1. Guerreiro - Mestre em combate corpo a corpo, com Força Bruta.")
-    pausar("2. Mago - Conjurador de feitiços poderosos, com Magia Arcana.")
-    pausar("3. Bardo - Encantador com palavras e música, com Charme Melódico.")
-    pausar("4. Ladino - Especialista em furtividade e truques, com Furtividade.")
+    """Exibe a introdução do jogo e a premissa."""
+    print("Bem-vindo a Ecos de Eldoria, um RPG de texto ambientado em um reino de fantasia medieval!")
+    print("\nNeste jogo, você é um aventureiro em Eldoria, uma terra outrora pacífica, agora ameaçada pela Sombra do Rei Lich, Necros.")
+    print("Sua missão é deter Necros e libertar o reino, enfrentando escolhas que levarão a diferentes destinos: glória, ruína ou um futuro incerto.")
+    print("\nPrepare-se para sua jornada em um mundo de magia, monstros e bravura...")
+    print("-" * 60) # Linha divisória para separar seções
 
 def escolher_classe():
-    while True:
-        exibir_menu_classe()
-        print("Digite o número da sua classe (1-4): ", end="", flush=True)
-        escolha = input().strip()
-        classes = {
-            "1": "guerreiro",
-            "2": "mago",
-            "3": "bardo",
-            "4": "ladino"
-        }
-        if escolha in classes:
-            classe = classes[escolha]
-            pausar(f"Você escolheu ser um {classe.capitalize()}!")
-            return classe
-        else:
-            pausar("Escolha inválida! Digite um número de 1 a 4.")
-
-def habilidade_classe(classe):
-    habilidades = {
-        "guerreiro": "Força Bruta",
-        "mago": "Magia Arcana",
-        "bardo": "Charme Melódico",
-        "ladino": "Furtividade"
+    """Permite ao jogador escolher uma classe e retorna a classe selecionada."""
+    classes_validas = {
+        "1": "Guerreiro (Força Bruta)",
+        "2": "Mago (Arcano Dominante)",
+        "3": "Arqueiro (Precisão Letal)",
+        "4": "Ladino (Discrição Mortal)",
+        "5": "Bardo (Charme Persuasivo)"
     }
-    return habilidades[classe]
 
-def reiniciar_jogo():
     while True:
-        print("\nDeseja jogar novamente? (sim/não): ", end="", flush=True)
-        resposta = input().strip().lower()
-        if resposta in ["sim", "s"]:
-            pausar("Reiniciando a aventura...")
+        print("\nEscolha sua classe:")
+        for key, value in classes_validas.items():
+            print(f"{key} - {value}")
+
+        escolha = input("Digite o número da sua classe: ").strip()
+
+        if escolha in classes_validas:
+            print(f"\nVocê escolheu: {classes_validas[escolha]}!")
+            return classes_validas[escolha]
+        else:
+            print("Opção inválida. Por favor, escolha um número de 1 a 5.")
+
+def capitulo_um(classe):
+    """Primeiro capítulo da aventura, com escolhas iniciais baseadas na classe."""
+    print("\n" + "=" * 60)
+    print("CAPÍTULO 1: O Chamado de Vilarejo Sereno")
+    print("=" * 60)
+    print(f"\nComo um(a) {classe}, você ouve os clamores do Vilarejo Sereno, assolado por criaturas sombrias, arautos de Necros.")
+    print("Boatos de rituais profanos se espalham, e a necessidade de agir é iminente.")
+
+    if "Guerreiro" in classe:
+        print("\nSua força e coragem são inegáveis. Você pode atacar diretamente o acampamento de criaturas ou proteger a milícia local.")
+        print("1 - Atacar Acampamento de Criaturas")
+        print("2 - Proteger e Treinar a Milícia Local")
+        escolha = input("O que você faz? ").strip()
+        return escolha
+    elif "Mago" in classe:
+        print("\nSeu conhecimento arcano é sua maior arma. Você pode buscar tomos antigos de magia ou conjurar um escudo protetor para o vilarejo.")
+        print("1 - Buscar Tomos Antigos de Magia")
+        print("2 - Conjurar Escudo Mágico para o Vilarejo")
+        escolha = input("O que você faz? ").strip()
+        return escolha
+    elif "Arqueiro" in classe:
+        print("\nSua precisão é lendária. Você pode se esgueirar para uma posição elevada e eliminar alvos-chave ou armar armadilhas estratégicas.")
+        print("1 - Eliminar Alvos-Chave Inimigos")
+        print("2 - Armar Armadilhas Estratégicas")
+        escolha = input("O que você faz? ").strip()
+        return escolha
+    elif "Ladino" in classe:
+        print("\nSua astúcia e discrição são suas maiores vantagens. Você pode roubar informações dos inimigos ou infiltrar-se em suas linhas para sabotagem.")
+        print("1 - Roubar Planos Inimigos")
+        print("2 - Infiltrar e Sabotar as Defesas Inimigas")
+        escolha = input("O que você faz? ").strip()
+        return escolha
+    elif "Bardo" in classe:
+        print("\nSua música e lábia podem mover corações. Você pode inspirar os aldeões a lutar ou tentar negociar com os líderes das criaturas.")
+        print("1 - Inspirar os Aldeões com Canções de Bravura")
+        print("2 - Tentar Negociar com os Líderes Inimigos")
+        escolha = input("O que você faz? ").strip()
+        return escolha
+    return "0" # Retorna "0" caso a classe não se encaixe nas condições
+
+def resultado_capitulo_um(classe, escolha):
+    """Determina o resultado do Capítulo 1 e retorna um status para o próximo capítulo."""
+    if "Guerreiro" in classe:
+        if escolha == "1":
+            print("\nVocê lidera um ataque feroz ao acampamento. Muitos caem, mas você obtém informações sobre a localização do covil de Necros.")
+            return "informacao_covil"
+        elif escolha == "2":
+            print("\nVocê treina a milícia, transformando camponeses em defensores. O vilarejo resiste, e sua fama se espalha, atraindo aliados.")
+            return "aliados_fama"
+    elif "Mago" in classe:
+        if escolha == "1":
+            print("\nVocê mergulha em ruínas esquecidas e encontra tomos que revelam um ritual antigo capaz de enfraquecer Necros.")
+            return "ritual_enfraquecer"
+        elif escolha == "2":
+            print("\nSeu escudo mágico protege o vilarejo, afastando as criaturas. Os aldeões ficam seguros, e você ganha tempo para investigar.")
+            return "tempo_investigar"
+    elif "Arqueiro" in classe:
+        if escolha == "1":
+            print("\nDe longe, você elimina os líderes das criaturas, desorganizando suas forças. O avanço inimigo é contido.")
+            return "inimigo_contido"
+        elif escolha == "2":
+            print("\nSuas armadilhas decimam as hordas. A rota de ataque inimiga é comprometida, forçando-os a recuar e buscar nova rota.")
+            return "rota_comprometida"
+    elif "Ladino" in classe:
+        if escolha == "1":
+            print("\nVocê se infiltra e rouba planos de Necros, descobrindo um ponto fraco em sua guarda pessoal.")
+            return "ponto_fraco_necros"
+        elif escolha == "2":
+            print("\nSua sabotagem causa caos nas linhas inimigas. Equipamentos são destruídos, e a moral deles despenca.")
+            return "moral_inimiga_baixa"
+    elif "Bardo" in classe:
+        if escolha == "1":
+            print("\nSuas canções infundem coragem nos aldeões, que resistem bravamente. Eles agora confiam em você para guiá-los.")
+            return "aldeões_confiam"
+        elif escolha == "2":
+            print("\nCom sua lábia, você convence os líderes das criaturas a recuarem, mas percebe que a verdadeira ameaça é Necros.")
+            return "ameaca_realizada"
+    
+    print("\nSuas escolhas levaram a um beco sem saída. A Sombra de Necros avança sem oposição.")
+    return "derrota" # Caso a escolha seja inválida ou leve a um resultado neutro/ruim
+
+def capitulo_dois(status_anterior):
+    """Segundo capítulo da aventura, influenciado pelas ações anteriores."""
+    print("\n" + "=" * 60)
+    print("CAPÍTULO 2: O Caminho para a Cidadela Sombria")
+    print("=" * 60)
+
+    if status_anterior == "informacao_covil":
+        print("\nCom a localização do covil de Necros, você se prepara para o ataque final. É uma caverna escura e infestada.")
+        print("Você pode invadir diretamente a caverna para um confronto brutal ou tentar encontrar uma entrada secreta.")
+        print("1 - Invasão Direta")
+        print("2 - Buscar Entrada Secreta")
+        escolha = input("Como você entra no covil? ").strip()
+        return escolha
+    elif status_anterior == "aliados_fama":
+        print("\nSeus novos aliados estão prontos para a batalha contra Necros, mas a moral deles depende de um líder forte.")
+        print("Você pode liderar uma carga frontal, inspirando todos, ou usar seus aliados para uma tática de cerco prolongado.")
+        print("1 - Liderar Carga Frontal")
+        print("2 - Tática de Cerco Prolongado")
+        escolha = input("Como você usa seus aliados? ").strip()
+        return escolha
+    elif status_anterior == "ritual_enfraquecer":
+        print("\nO ritual arcano pode enfraquecer Necros, mas exige tempo e concentração em um local de poder místico.")
+        print("Você pode realizar o ritual rapidamente e enfrentar Necros enfraquecido ou preparar o ritual em segredo para uma vantagem total.")
+        print("1 - Realizar Ritual Rápido")
+        print("2 - Preparar Ritual em Segredo")
+        escolha = input("Qual sua estratégia arcana? ").strip()
+        return escolha
+    elif status_anterior == "tempo_investigar":
+        print("\nCom o vilarejo seguro, você investigou e descobriu uma relíquia antiga que pode selar Necros, mas está bem guardada.")
+        print("Você pode tentar furtar a relíquia com discrição ou lutar para obtê-la à força.")
+        print("1 - Furtar a Relíquia")
+        print("2 - Lutar pela Relíquia")
+        escolha = input("Como você adquire a relíquia? ").strip()
+        return escolha
+    elif status_anterior == "inimigo_contido":
+        print("\nO avanço inimigo foi contido, mas Necros está furioso e enviou suas tropas de elite. É hora de um confronto decisivo.")
+        print("Você pode emboscar as tropas de elite ou atrair Necros para uma batalha campal onde suas habilidades são superiores.")
+        print("1 - Emboscar Tropas de Elite")
+        print("2 - Atrair Necros para Batalha Campal")
+        escolha = input("Qual sua tática de combate? ").strip()
+        return escolha
+    elif status_anterior == "rota_comprometida":
+        print("\nAs armadilhas comprometeram as rotas principais de Necros, mas ele está usando passagens subterrâneas. Você precisa interceptá-lo.")
+        print("Você pode esperar por ele em uma saída crucial ou ir atrás dele nas passagens escuras.")
+        print("1 - Esperar em Saída Crucial")
+        print("2 - Perseguir nas Passagens Subterrâneas")
+        escolha = input("Como você intercepta Necros? ").strip()
+        return escolha
+    elif status_anterior == "ponto_fraco_necros":
+        print("\nVocê descobriu um ponto fraco na guarda de Necros, mas explorá-lo exige precisão e uma distração bem orquestrada.")
+        print("Você pode usar o ponto fraco para um ataque surpresa ou criar uma distração massiva para quebrar sua defesa.")
+        print("1 - Ataque Surpresa no Ponto Fraco")
+        print("2 - Criar Distração Massiva")
+        escolha = input("Qual sua estratégia de infiltração? ").strip()
+        return escolha
+    elif status_anterior == "moral_inimiga_baixa":
+        print("\nA moral do inimigo está em frangalhos, mas Necros ainda é uma força a ser temida. É a hora de desferir o golpe final.")
+        print("Você pode incitar uma revolta entre os soldados de Necros ou atacar diretamente seu santuário enquanto ele está vulnerável.")
+        print("1 - Incitar Revolta entre os Soldados")
+        print("2 - Atacar Santuário de Necros")
+        escolha = input("Como você finaliza a batalha? ").strip()
+        return escolha
+    elif status_anterior == "aldeões_confiam":
+        print("\nOs aldeões estão prontos para lutar ao seu lado, mas não são soldados experientes. Você precisa de uma tática que minimize perdas.")
+        print("Você pode liderar um ataque de guerrilha, usando o conhecimento local, ou organizar uma defesa forte, esperando Necros atacar.")
+        print("1 - Liderar Ataque de Guerrilha com Aldeões")
+        print("2 - Organizar Defesa Forte do Vilarejo")
+        escolha = input("Qual sua tática com os aldeões? ").strip()
+        return escolha
+    elif status_anterior == "ameaca_realizada":
+        print("\nVocê percebeu que Necros é a verdadeira ameaça. Ele está no centro do poder das criaturas. Você deve confrontá-lo.")
+        print("Você pode tentar um confronto direto e dramático, ou usar sua lábia para expor as mentiras de Necros aos seus seguidores.")
+        print("1 - Confronto Direto com Necros")
+        print("2 - Expor as Mentiras de Necros para seus Seguidores")
+        escolha = input("Como você o enfrenta? ").strip()
+        return escolha
+    
+    return "0" # Caso um status_anterior inesperado chegue aqui
+
+def final(classe, status_anterior, escolha_final):
+    """Determina e exibe um dos três finais possíveis: Glória, Ruína ou Futuro Incerto."""
+    print("\n" + "=" * 60)
+    print("O DESTINO DE ELDORIA")
+    print("=" * 60)
+
+    # Lógica para o Final de Glória
+    if ("Guerreiro" in classe and status_anterior == "informacao_covil" and escolha_final == "1") or \
+       ("Mago" in classe and status_anterior == "ritual_enfraquecer" and escolha_final == "2") or \
+       ("Arqueiro" in classe and status_anterior == "inimigo_contido" and escolha_final == "1") or \
+       ("Ladino" in classe and status_anterior == "ponto_fraco_necros" and escolha_final == "1") or \
+       ("Bardo" in classe and status_anterior == "ameaca_realizada" and escolha_final == "2"):
+        print("\nCom bravura e estratégia, você derrota o Rei Lich Necros e liberta Eldoria de sua escuridão!")
+        print("Os reinos o aclamam como um verdadeiro herói. A paz retorna, e lendas são cantadas sobre seus feitos.")
+        print("\nFINAL DE GLÓRIA: Seu nome ecoa pelos séculos. Eldoria está salva.")
+        return "gloria"
+    
+    # Lógica para o Final de Ruína
+    elif ("Guerreiro" in classe and status_anterior == "aliados_fama" and escolha_final == "2") or \
+         ("Mago" in classe and status_anterior == "tempo_investigar" and escolha_final == "2") or \
+         ("Arqueiro" in classe and status_anterior == "rota_comprometida" and escolha_final == "2") or \
+         ("Ladino" in classe and status_anterior == "moral_inimiga_baixa" and escolha_final == "1") or \
+         ("Bardo" in classe and status_anterior == "aldeões_confiam" and escolha_final == "2"):
+        print("\nSuas táticas falham, ou o poder de Necros se mostra invencível. Eldoria sucumbe à escuridão.")
+        print("O reino é consumido pelo caos, e seu nome se torna um lamento nas histórias de derrota.")
+        print("\nFINAL DE RUÍNA: A escuridão prevaleceu. A esperança se perdeu.")
+        return "ruina"
+
+    # Lógica para o Final de Futuro Incerto
+    else:
+        print("\nVocê consegue deter Necros, mas a um custo elevado, ou o futuro de Eldoria permanece incerto.")
+        print("Vitórias parciais ou sacrifícios deixam cicatrizes no reino. A luta por um futuro verdadeiramente pacífico continua.")
+        print("\nFINAL DE FUTURO INCERTO: A ameaça imediata foi superada, mas a paz ainda é frágil.")
+        return "incerto"
+
+def jogar_novamente():
+    """Pergunta ao jogador se deseja jogar novamente."""
+    while True:
+        resposta = input("\nDeseja jogar novamente? (s/n): ").strip().lower()
+        if resposta == "s":
             return True
-        elif resposta in ["não", "nao", "n"]:
-            pausar("Obrigado por jogar! Até a próxima aventura!")
+        elif resposta == "n":
             return False
         else:
-            pausar("Escolha inválida! Digite 'sim' ou 'não'.")
+            print("Resposta inválida. Por favor, digite 's' para sim ou 'n' para não.")
 
-def tentar_novamente_antes_derrota():
-    while True:
-        print("\nVocê foi derrotado! Deseja tentar novamente? (sim/não): ", end="", flush=True)
-        resposta = input().strip().lower()
-        if resposta in ["sim", "s"]:
-            pausar("Reiniciando a aventura...")
-            return True
-        elif resposta in ["não", "nao", "n"]:
-            return False
-        else:
-            pausar("Escolha inválida! Digite 'sim' ou 'não'.")
-
-def jogo():
+# --- Loop Principal do Jogo ---
+if __name__ == "__main__":
     while True:
         introducao()
-        pausar("Iniciando o jogo...")
-        classe = escolher_classe()
-        habilidade = habilidade_classe(classe)
         
-        pausar("\nVocê chega à vila de Eldoria, onde o dragão Valthor aterroriza os moradores.")
-        pausar("O líder da vila implora sua ajuda para derrotar a besta.")
-        pausar("Você descobre cinco caminhos para enfrentar a ameaça:")
-
-        while True:
-            pausar("\n1. Entrar na caverna de Valthor e enfrentá-lo diretamente.")
-            pausar("2. Buscar a Lança do Destino em um templo antigo.")
-            pausar("3. Negociar com Valthor, tentando evitar o confronto.")
-            pausar("4. Recrutar aliados na cidade vizinha de Thornvale.")
-            pausar("5. Explorar a Floresta Sombria em busca de um artefato lendário.")
-            escolha = input("Qual caminho você escolhe? (1-5): ").strip()
-
-            if escolha == "1":
-                resultado = caminho_caverna(classe, habilidade)
-                if resultado == "derrota" and tentar_novamente_antes_derrota():
-                    continue  # Reinicia o loop interno para nova tentativa
-                break
-            elif escolha == "2":
-                resultado = caminho_templo(classe, habilidade)
-                if resultado == "derrota" and tentar_novamente_antes_derrota():
-                    continue
-                break
-            elif escolha == "3":
-                resultado = caminho_negociacao(classe, habilidade)
-                if resultado == "derrota" and tentar_novamente_antes_derrota():
-                    continue
-                break
-            elif escolha == "4":
-                resultado = caminho_aliados(classe, habilidade)
-                if resultado == "derrota" and tentar_novamente_antes_derrota():
-                    continue
-                break
-            elif escolha == "5":
-                resultado = caminho_floresta(classe, habilidade)
-                if resultado == "derrota" and tentar_novamente_antes_derrota():
-                    continue
+        classe_escolhida = escolher_classe()
+        
+        # O Capítulo 1 retorna uma escolha que determinará o 'status_cap_1'
+        escolha_cap_1 = capitulo_um(classe_escolhida)
+        # O 'resultado_capitulo_um' pega a classe e a escolha para gerar um novo 'status' para o próximo capítulo
+        status_cap_2 = resultado_capitulo_um(classe_escolhida, escolha_cap_1)
+        
+        # Se o resultado do capítulo 1 foi uma "derrota", o jogo para ou reinicia
+        if status_cap_2 == "derrota":
+            print("\nSeus esforços foram em vão no primeiro confronto. Necros consolidou seu poder.")
+            if not jogar_novamente():
                 break
             else:
-                pausar("Escolha inválida! Digite 1, 2, 3, 4 ou 5.")
+                continue # Reinicia o loop principal do jogo
+        
+        # O Capítulo 2 usa o 'status_cap_2' para apresentar novas escolhas e retorna a escolha final
+        escolha_final = capitulo_dois(status_cap_2)
+        
+        # Se a escolha final foi "0", indica um caminho inesperado ou derrota no cap 2
+        if escolha_final == "0":
+            print("\nSuas últimas ações não foram suficientes para deter Necros. Eldoria caiu na escuridão.")
+            if not jogar_novamente():
+                break
+            else:
+                continue
 
-        if not reiniciar_jogo():
+        # O final do jogo é determinado pela classe, status anterior e escolha final
+        final_jogo = final(classe_escolhida, status_cap_2, escolha_final)
+        
+        # Pergunta se o jogador quer jogar novamente
+        if not jogar_novamente():
             break
 
-def caminho_caverna(classe, habilidade):
-    pausar("\nVocê entra na caverna escura de Valthor, ouvindo seu rugido ecoar.")
-    pausar(f"Você confia em sua {habilidade} para enfrentar o dragão.")
-    pausar("Valthor desperta e avança! Você deve decidir rapidamente:")
-    pausar("1. Atacar com tudo o que tem.")
-    pausar("2. Tentar se esconder e atacar pelas costas.")
-
-    while True:
-        print("O que você faz? (1, 2): ", end="", flush=True)
-        escolha = input().strip()
-        if escolha == "1":
-            if classe == "guerreiro":
-                pausar("Com sua força, você enfrenta Valthor em um combate feroz!")
-                pausar("Após uma batalha épica, você corta a cabeça do dragão.")
-                final_bom()
-                return "vitória"
-            else:
-                pausar("Você tenta enfrentar Valthor, mas ele é forte demais!")
-                pausar("O dragão o incinera com seu sopro flamejante.")
-                return "derrota"
-        elif escolha == "2":
-            if classe == "ladino":
-                pausar("Você se esgueira e acerta um golpe crítico nas costas de Valthor!")
-                pausar("O dragão cai, e você se torna um herói.")
-                final_bom()
-                return "vitória"
-            else:
-                pausar("Você tenta se esconder, mas Valthor o encontra facilmente.")
-                pausar("Ele o esmaga com sua cauda.")
-                return "derrota"
-        else:
-            pausar("Escolha inválida! Digite 1 ou 2.")
-
-def caminho_templo(classe, habilidade):
-    pausar("\nVocê viaja até o templo em ruínas, enfrentando armadilhas mortais.")
-    pausar(f"Usando sua {habilidade}, você chega à câmara da Lança do Destino.")
-    pausar("Ao pegar a lança, você sente seu poder. Mas o templo começa a desmoronar!")
-    pausar("Você deve decidir rapidamente:")
-    pausar("1. Correr para fora do templo com a lança.")
-    pausar("2. Explorar a câmara em busca de mais tesouros.")
-    pausar("3. Usar sua habilidade para estabilizar o templo.")
-
-    while True:
-        print("O que você faz? (1, 2, 3): ", end="", flush=True)
-        escolha = input().strip()
-        if escolha == "1":
-            pausar("Você escapa do templo e usa a lança para matar Valthor!")
-            final_bom()
-            return "vitória"
-        elif escolha == "2":
-            pausar("Você encontra ouro, mas o templo desaba, soterrando você.")
-            return "derrota"
-        elif escolha == "3":
-            if classe == "mago":
-                pausar("Você conjura um feitiço para estabilizar o templo.")
-                pausar("Com a lança e tesouros adicionais, você derrota Valthor.")
-                final_bom()
-                return "vitória"
-            else:
-                pausar("Sua tentativa falha, e o templo desmorona sobre você.")
-                return "derrota"
-        else:
-            pausar("Escolha inválida! Digite 1, 2 ou 3.")
-
-def caminho_negociacao(classe, habilidade):
-    pausar("\nVocê se aproxima da caverna de Valthor e oferece uma trégua.")
-    pausar(f"Usando sua {habilidade}, você tenta convencer o dragão.")
-    pausar("Valthor ouve, mas exige algo em troca. Ele propõe:")
-    pausar("1. Oferecer sua lealdade eterna como servo.")
-    pausar("2. Entregar a vila de Eldoria como tributo.")
-
-    while True:
-        print("O que você faz? (1, 2): ", end="", flush=True)
-        escolha = input().strip()
-        if escolha == "1":
-            if classe == "bardo":
-                pausar("Sua música acalma Valthor, que aceita sua lealdade.")
-                pausar("Você salva Eldoria, mas vive como servo do dragão.")
-                final_ambiguo()
-                return "vitória"
-            else:
-                pausar("Valthor aceita, mas logo se cansa de você e o devora.")
-                return "derrota"
-        elif escolha == "2":
-            pausar("Você trai Eldoria, e Valthor poupa sua vida.")
-            pausar("Você vive, mas carrega a culpa pela destruição da vila.")
-            final_ambiguo()
-            return "vitória"
-        else:
-            pausar("Escolha inválida! Digite 1 ou 2.")
-
-def caminho_aliados(classe, habilidade):
-    pausar("\nVocê viaja para Thornvale para recrutar aliados contra Valthor.")
-    pausar(f"Usando sua {habilidade}, você tenta convencer os guerreiros locais.")
-    pausar("O líder de Thornvale exige uma prova de sua coragem:")
-    pausar("1. Derrotar um lobo gigante na arena.")
-    pausar("2. Roubar um artefato dos bandidos locais.")
-
-    while True:
-        print("O que você faz? (1, 2): ", end="", flush=True)
-        escolha = input().strip()
-        if escolha == "1":
-            if classe in ["guerreiro", "mago"]:
-                pausar("Você derrota o lobo com sua habilidade, ganhando aliados.")
-                pausar("Com o exército, você enfrenta e derrota Valthor!")
-                final_bom()
-                return "vitória"
-            else:
-                pausar("O lobo é forte demais, e você é gravemente ferido.")
-                pausar("Sem aliados, você não pode enfrentar Valthor.")
-                return "derrota"
-        elif escolha == "2":
-            if classe == "ladino":
-                pausar("Você rouba o artefato com sucesso, impressionando Thornvale.")
-                pausar("Com aliados, você derrota Valthor!")
-                final_bom()
-                return "vitória"
-            else:
-                pausar("Você é pego pelos bandidos e não consegue aliados.")
-                pausar("Sem apoio, Valthor destrói Eldoria.")
-                return "derrota"
-        else:
-            pausar("Escolha inválida! Digite 1 ou 2.")
-
-def caminho_floresta(classe, habilidade):
-    pausar("\nVocê entra na Floresta Sombria, onde dizem haver um orbe místico.")
-    pausar(f"Usando sua {habilidade}, você enfrenta perigos sobrenaturais.")
-    pausar("Você encontra o orbe, mas um espírito guardião aparece!")
-    pausar("1. Tentar convencer o espírito a entregar o orbe.")
-    pausar("2. Lutar contra o espírito pelo orbe.")
-
-    while True:
-        print("O que você faz? (1, 2): ", end="", flush=True)
-        escolha = input().strip()
-        if escolha == "1":
-            if classe == "bardo":
-                pausar("Seu charme convence o espírito, que lhe dá o orbe.")
-                pausar("Com o orbe, você enfraquece Valthor e o derrota!")
-                final_bom()
-                return "vitória"
-            else:
-                pausar("O espírito não confia em você e o amaldiçoa.")
-                pausar("Você perece na floresta, e Eldoria é destruída.")
-                return "derrota"
-        elif escolha == "2":
-            if classe in ["guerreiro", "mago"]:
-                pausar("Você derrota o espírito e toma o orbe!")
-                pausar("Com o orbe, você mata Valthor e salva Eldoria.")
-                final_bom()
-                return "vitória"
-            else:
-                pausar("O espírito é poderoso demais e o derrota.")
-                pausar("Sem o orbe, Eldoria cai perante Valthor.")
-                return "derrota"
-        else:
-            pausar("Escolha inválida! Digite 1 ou 2.")
-
-def final_bom():
-    pausar("\nVocê derrota Valthor e salva Eldoria!")
-    pausar("Os aldeões o celebram como herói, e seu nome é lembrado por gerações.")
-    pausar("FIM - Final Bom")
-
-def final_ruim():
-    pausar("\nVocê falha em sua missão e morre tragicamente.")
-    pausar("Eldoria é destruída por Valthor, e seu nome é esquecido.")
-    pausar("FIM - Final Ruim")
-
-def final_ambiguo():
-    pausar("\nVocê evita a destruição de Eldoria, mas a um custo pessoal.")
-    pausar("Você vive com o peso de suas escolhas, longe da glória.")
-    pausar("FIM - Final Ambíguo")
-
-if __name__ == "__main__":
-    jogo()
-    print("Programa finalizado!", flush=True)
+    print("\nObrigado por jogar Ecos de Eldoria!")
